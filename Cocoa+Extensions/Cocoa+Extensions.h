@@ -13,7 +13,9 @@
 
 #import "NSAppleScript+Handler.h"
 #import "NSArray+Extensions.h"
+#import "NSDate+Utilities.h"
 #import "NSDictionary+Extensions.h"
+#import "NSHTTPURLResponse+Extensions.h"
 #import "NSMutableArray+Extensions.h"
 #import "NSString+Extensions.h"
 #import "NSString+HTML.h"
