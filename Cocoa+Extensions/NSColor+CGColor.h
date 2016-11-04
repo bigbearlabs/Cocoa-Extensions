@@ -12,6 +12,4 @@
 
 @property (readonly) CGColorRef CGColor;
 
-//Create new NSColor from a CGColorRef
-+ (NSColor *)colorWithCGColor:(CGColorRef)aColor;
 @end

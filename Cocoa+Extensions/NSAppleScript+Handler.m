@@ -11,6 +11,7 @@
 
 #import <Carbon/Carbon.h>
 #import "NSAppleScript+Handler.h"
+#import "KFASHandlerAdditions-TypeTranslation.h"
 
 @implementation NSAppleScript (Handler)
 
@@ -25,6 +26,9 @@
 			[_parameterList insertDescriptor:[NSAppleEventDescriptor descriptorWithString:obj] atIndex:(index++)];
         else if ([obj isKindOfClass:[NSAppleEventDescriptor class]])
 			[_parameterList insertDescriptor:obj atIndex:(index++)];
+        else {
+          [_parameterList insertDescriptor:[obj aeDescriptorValue] atIndex:(index++)];
+        }
     }
     
     NSAppleEventDescriptor *theEvent = [NSAppleEventDescriptor appleEventWithEventClass:typeAppleScript
@@ -34,10 +38,16 @@
                                                                           transactionID:kAnyTransactionID];
     
     NSAppleEventDescriptor *theHandlerName = [NSAppleEventDescriptor descriptorWithString:handlerName];
-    [theEvent setDescriptor:theHandlerName forKeyword:keyASSubroutineName];
-    [theEvent setDescriptor:_parameterList forKeyword:keyDirectObject];
-    
-    return [self executeAppleEvent:theEvent error:nil];
+    [theEvent setParamDescriptor:theHandlerName forKeyword:keyASSubroutineName];
+    [theEvent setParamDescriptor:_parameterList forKeyword:keyDirectObject];
+  
+    NSDictionary* err = nil;
+    id result = [self executeAppleEvent:theEvent error:&err];
+    if (err) {
+      NSLog(@"error executing apple event: %@", err);
+    }
+  
+    return result;
 }
 
 - (NSAppleEventDescriptor *)callHandler:(NSString *)handlerName withParameters:(id)firstParameter, ...{
@@ -70,3 +80,7 @@
 }
 
 @end
+
+
+
+

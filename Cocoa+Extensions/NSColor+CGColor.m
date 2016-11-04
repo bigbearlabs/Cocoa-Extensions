@@ -21,16 +21,4 @@
     return theColor;
 }
 
-+ (NSColor*)colorWithCGColor:(CGColorRef)aColor{
-    if (aColor == NULL)
-        return nil;
-    
-    const CGFloat *components = CGColorGetComponents(aColor);
-    CGFloat red = components[0];
-    CGFloat green = components[1];
-    CGFloat blue = components[2];
-    CGFloat alpha = components[3];
-    return [self colorWithDeviceRed:red green:green blue:blue alpha:alpha];     
-}
-
 @end
