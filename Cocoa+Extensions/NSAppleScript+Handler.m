@@ -13,6 +13,7 @@
 #import "NSAppleScript+Handler.h"
 #import "KFASHandlerAdditions-TypeTranslation.h"
 
+
 @implementation NSAppleScript (Handler)
 
 - (NSAppleEventDescriptor *)callHandler:(NSString *)handlerName withArrayOfParameters:(NSArray *)parameterList{
@@ -42,12 +43,13 @@
     [theEvent setParamDescriptor:_parameterList forKeyword:keyDirectObject];
   
     NSDictionary* err = nil;
-    id result = [self executeAppleEvent:theEvent error:&err];
+    NSAppleEventDescriptor* result = [self executeAppleEvent:theEvent.copy error:&err];
     if (err) {
       NSLog(@"error executing apple event: %@", err);
     }
   
-    return result;
+    err = nil;
+    return result.copy;
 }
 
 - (NSAppleEventDescriptor *)callHandler:(NSString *)handlerName withParameters:(id)firstParameter, ...{
